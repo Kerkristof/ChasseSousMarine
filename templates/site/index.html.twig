@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SiteController!{% endblock %}
+
+{% block body %}
+  <div class="row">
+    {% for site in sites %}
+      <div class="card">
+        <img class="card-img-top" src="{{ asset('assets/images/sites/' ~ site.imageName) }}" alt="fish">
+        <div class="card-body">
+          <h3>{{ site.nom }}</h3>
+          <p>Publié par <i>{{ site.user.username }}</i></p>
+            <p>{{ site.contenu |slice(0,50) | split(' ') | slice(0,-1) | join(' ') }} ...</p>
+            <a class="link" href="{{ path('sortie_index', {'site_id' : site.id}) }}"> {{ site.sorties | length }} sortie(s) à {{ site.nom}}</a>
+            <br>
+            {% if app.user %}
+            <a class="link" href="{{ path('sortie_new', {'site_id' : site.id}) }}">Ajout d'une sortie</a>
+            {% endif %}
+            <br>
+            <a class="link" href="{{ path('site_show', {'id' : site.id}) }}">Lire la suite</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- PASSER A LA PAGE SUIVANTE -->
+  <a href="{{ path('site_index', {'page': page - 1}) }}" class="btn page"> << </a>
+  <span>Page {{ page }} </span>
+  <a href="{{ path('site_index', {'page' :  page + 1 } ) }}" class="btn page"> >> </a>
+  <hr>
+
+  <!-- AJOUT D UN NOUVEAU SITE -->
+  {% if app.user %}
+    <a href="{{ path('site_new') }}" class="btn btn-success">Ajout d'un nouveau site</a>
+  {% else %}
+    <a class="link" href="{{ path('security_login') }}">Connectez vous pour publier un nouveau site</a>
+  {% endif %}
+
+{% endblock %}

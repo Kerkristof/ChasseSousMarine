@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <h3>Formulaire d'enregistrement d'un nouveau site</h3>
+  {{ form_start(formSite) }}
+    {{ form_row(formSite.nom, {'label' : 'Nom du site', 'attr' : { 'placeholder' : 'Nom du site...', 'class' : 'form-control'}} )}}
+    <br>
+    {{ form_row(formSite.contenu, {'label' : 'Description', 'attr' : {'class' : 'form-control'}} )}}
+    <br>
+    {{ form_row(formSite.gps, {'label' : 'Coordonées GPS', 'attr' : { 'placeholder' : 'eg. 47.332530 -3.145908 ', 'class' : 'form-control'}} )}}
+    <br>
+    {{ form_row(formSite.imageFile, { 'label' :"Image", 'attr' : { 'class':'form-control'}}) }}
+    <br>
+    <button type="submit" class="btn btn-success">
+      {% if editMode %}
+        Enregistrer les modifications
+      {% else %}
+        Ajouter le site
+      {% endif %}
+    </button>
+  {{ form_end(formSite) }}
+{% endblock %}

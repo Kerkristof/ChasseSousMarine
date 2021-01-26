@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+  <div class="login-container">
+    <div class="row">
+      <div class="col-2">
+        <img src="{{asset("assets/images/icones/masque.png")}}" width="80%" alt="masque">
+      </div>
+      <div class="col-10">
+        <h3>Créez votre compte</h3>
+      </div>
+    </div>
+    <hr>
+    {{ form_start(formRegistration) }}
+    {{ form_widget(formRegistration.username, {'attr' : {'placeholder' : "Votre pseudo...", 'class':'form-control'}}) }}
+    {{ form_widget(formRegistration.email, { 'label' : "Email", 'attr' : {'placeholder' : "Votre email...", 'class':'form-control'}}) }}
+    <small class="error">
+      {{ form_errors(formRegistration.password)}}
+    </small>
+    {{ form_widget(formRegistration.password, { 'label' : "Mot de passe", 'attr' : {'placeholder' : "Votre mot de passe...", 'class':'form-control'}}) }}
+    <small class="error">
+      {{ form_errors(formRegistration.confirm_password)}}
+    </small>
+    {{ form_widget(formRegistration.confirm_password, { 'label' : "Confirmation de votre mot de passe", 'attr' : {'placeholder' : "Confirmer votre mot de passe", 'class':'form-control'}}) }}
+    <i><small>
+        {{ form_help(formRegistration.password)}}
+    </small></i>
+    <button type="submit" class="btn btn-success">Valider</button>
+    {{ form_end(formRegistration) }}
+  </div>
+
+{% endblock %}

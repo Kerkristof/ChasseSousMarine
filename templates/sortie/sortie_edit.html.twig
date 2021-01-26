@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <h1>Page d'ajout d'une nouvelle sortie</h1>
+  {{ form_start(formSortie) }}
+    {{ form_row(formSortie.contenu, {'label':'Description', 'attr':{'class':'form-control'}} )}}
+    <br>
+    {{ form_row(formSortie.created_at, {'label' : 'Date'} )}}
+    <br>
+    <button type="submit" class="btn btn-success">
+      {% if editMode %}
+        Enregistrer les modifications
+      {% else %}
+        Ajouter cette sortie
+      {% endif %}
+    </button>
+  {{ form_end(formSortie) }}
+
+{% endblock %}
+
+{% block javascripts %}
+  <script type="text/javascript" src="{{ asset('assets/js/monJs.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<section>
+  <h3>{{ site.nom}}</h3>
+  <p>Article publié par <strong>{{ site.user.username }}</strong></p>
+  <p>Coordonées GPS du site
+    <a class="link" href="https://www.google.fr/maps/place/{{site.gps}}" target="blanck">{{ site.gps }}</a>
+  </p>
+  <img class="card-image image" src="{{ asset('assets/images/sites/' ~ site.imageName) }}" alt="fish">
+  <br>
+  <hr>
+  <p class="contenu">{{ site.contenu}}</p>
+
+  <!-- SUPPRESSION OU MODIF DE L ARTICLE -->
+  {% set check = false %}
+  {% if app.user %}
+    {% for role in app.user.userRoles %}
+      {% if role.value == 'ROLE_ADMIN' %}
+        {% set check = true %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+  {% if app.user and (app.user.username == site.user.username or check == true) %}
+  <a href="{{ path('site_edit', {'id': site.id}) }}" class="btn btn-warning"><strong>Modifier</strong> </a>
+  <a href="{{ path('site_delete', {'id': site.id}) }}" class="btn btn-danger"><strong>Supprimer</strong> </a>
+  {% endif %}
+
+
+{% endblock %}

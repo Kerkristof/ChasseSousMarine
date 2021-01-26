@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+  <h3>Sortie à {{ sortie.site.nom }}</h3>
+  <p><i>Le {{ sortie.createdAt | date('d/m/Y') }} par {{sortie.auteur.userName}}</i></p>
+  <center>
+    <img class="image" src="{{ asset("assets/images/sites/" ~ sortie.site.imageName) }}" alt="construction">
+  </center>
+  <br>
+  <p class="contenu">{{ sortie.contenu }}</p>
+
+  <!-- TABLE DES PRISES -->
+  <h5>Prises</h5>
+  <div class="row">
+    <div class="col-9">
+      <div class="row">
+        {% for prise in sortie.prises | sort((a,b) => a.espece.nom <=> b.espece.nom) %}
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-4">
+                <img src="{{ asset( "assets/images/especes/" ~ prise.espece.imageName ) }}" width="30px" alt="">
+              </div>
+              <div class="col-8">
+                <h5 class="card-text">{{ prise.espece.nom }}</h5>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-text">{{ prise.taille }} cm</p>
+            <p class="card-text">{{ prise.contenu }}</p>
+            {% if app.user and (app.user == prise.sortie.auteur) %}
+              <a class="link" href="{{ path('prise_delete', {'id' : prise.id }) }}">Supprimer cette prise</a>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-3">
+      <!-- FORMULAIRE D AJOUT D UNE PRISE -->
+      {% if app.user == sortie.auteur %}
+      {{ form_start(formPrise) }}
+      {{ form_row(formPrise.espece, {'label':'Espece', 'attr':{'class':'form-control'}}) }}
+      {{ form_row(formPrise.contenu, {'label':'Description', 'attr':{'class':'form-control'}}) }}
+      {{ form_row(formPrise.taille, {'label':'Taille en cm', 'attr':{'class':'form-control'}}) }}
+      <button type="submit" class="btn"><strong>Ajouter une prise</strong></button>
+      {{ form_end(formPrise) }}
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- SUPPRESSION OU MODIF DE LA SORTIE -->
+
+  {% if app.user == sortie.auteur or user_is_admin %}
+    <a href="{{ path('sortie_edit', {'site_id': sortie.site.id , 'id' : sortie.id}) }}" class="btn"><strong>Modifier la sortie</strong></a>
+    <a href="{{ path('sortie_delete', {'id' : sortie.id }) }}" class="btn"><strong>Supprimer la sortie</strong></a>
+  {% endif %}
+{% endblock %}

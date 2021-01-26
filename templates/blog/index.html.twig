@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BlogController!{% endblock %}
+
+{% block body %}
+  <div class="blog-container">
+    <!-- AJOUTER UN COMMENTAIRE -->
+    {% if app.user %}
+    {{ form_start(formBlog) }}
+    <br>
+    {{ form_widget(formBlog.contenu, { 'attr' : { 'class':'form-control'}}) }}
+    <button type="submit" class="btn btn-success">Publier un commentaire</button>
+    {{ form_end(formBlog) }}
+    {% else %}
+    <a href="{{ path('security_login') }}" class="link"> <strong>Connectez vous pour publier un commentaire</strong></a>
+    {% endif %}
+    <hr>
+
+    <!-- AFFICHAGE DES COMMENTAIRES -->
+    {% for comment in blog_comments %}
+    <div class="row">
+      <p class="blog-text col-3"> <small>De <strong>{{comment.auteur.username}}</strong>
+        <br>le {{comment.createdAt | date('d/m/Y à H:i')}}</small> </p>
+        <p class="text-blog col-7"> <small>{{comment.contenu}}</small></p>
+        <!-- SUPPRIMER UN COMMENTAIRE-->
+        <div class="col-2">
+          {% if app.user %}
+          {% for role in app.user.userRoles %}
+          {% if role.value == 'ROLE_ADMIN' %}
+          <a href="{{ path('blog_comment_delete', {'id' : comment.id })}}">supprimer</a>
+          {% endif %}
+          {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+      <hr>
+      {% endfor %}
+
+      <!-- PASSER A LA PAGE SUIVANTE -->
+      <a href="{{ path('blog', {'page': page - 1}) }}" class="btn page"> << </a>
+      <span>Page {{ page }} </span>
+      <a href="{{ path('blog', {'page' :  page + 1 } ) }}" class="btn page"> >> </a>
+      <hr>
+
+  </div>
+
+
+{% endblock %}

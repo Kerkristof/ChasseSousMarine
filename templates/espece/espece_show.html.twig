@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<section>
+  <h3>{{ espece.nom}}</h3>
+  <p>Article publié par <strong>{{ espece.auteur.username }}</strong></p>
+  <p>La taille minimale de prélèvement pour ce poisson est de {{ espece.maille}} cm </p>
+  <img src={{ asset('assets/images/especes/' ~ espece.imageName) }} alt="fish" class="image">
+  <p class="contenu">{{ espece.contenu}}</p>
+
+  <!-- SUPPRESSION OU MODIF DE L ARTICLE -->
+  {% set check = false %}
+  {% if app.user %}
+    {% for role in app.user.userRoles %}
+      {% if role.value == 'ROLE_ADMIN' %}
+        {% set check = true %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+  {% if app.user and (app.user.username == espece.auteur.username or check == true) %}
+  <a href="{{ path('espece_edit', {'id': espece.id}) }}" class="btn"><strong>Modifier l'espèce</strong> </a>
+  <a href="{{ path('espece_delete', {'id': espece.id}) }}" class="btn"><strong>Supprimer l'espèce</strong> </a>
+  {% endif %}
+
+{% endblock %}

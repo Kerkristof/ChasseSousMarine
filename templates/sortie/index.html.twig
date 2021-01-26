@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+  <div class="row">
+    {% for sortie in sorties %}
+        <div class="card">
+          <img src="{{ asset('assets/images/sites/'~ sortie.site.imageName) }}" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-text">{{ sortie.auteur.username}}</h5>
+            <p class="card-text">{{sortie.site.nom}} le {{ sortie.createdAt | date('d/m/Y')}}</p>
+            <p style="height:40px" class="card-text">{{ sortie.contenu |slice(0,50) | split(' ') | slice(0,-1) | join(' ')}} ...</p>
+            <div class="row">
+              <div class="col-3">
+                <img src="{{ asset('assets/images/icones/prise.jpg') }}" width="100%" alt="">
+              </div>
+              <div class="col-2">
+                <p>{{ sortie.prises | length }}</p>
+              </div>
+            </div>
+            <a href="{{ path('sortie_show', {'id' : sortie.id}) }}" class="link">Lire la suite</a>
+          </div>
+        </div>
+    {% endfor %}
+  </div>
+
+    <!-- PASSER A LA PAGE SUIVANTE -->
+    <a href="{{ path('sortie_index', {'site_id': site_id, 'page': page - 1}) }}" class="btn page"> << </a>
+    <span>Page {{ page }} </span>
+    <a href="{{ path('sortie_index', {'site_id': site_id, 'page': page + 1} ) }}" class="btn page"> >> </a>
+
+{% endblock %}

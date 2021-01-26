@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="login-container">
+  <div class="row">
+    <div class="col-2">
+      <img src="{{asset("assets/images/icones/masque.png")}}" width="80%" alt="masque">
+    </div>
+    <div class="col-10">
+      <h3>Connexion espace abonné</h3>
+    </div>
+  </div>
+  <hr>
+  <form class="" action="{{path('security_login')}}" method="post">
+    <div class="form-group">
+      <input type="text" class="form-control" required name="_username" placeholder="Votre email ...">
+    </div>
+    <div class="form-group">
+      <input type="password" class="form-control" required name="_password" placeholder="Votre mot de passe ..." name="" value="">
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-success">Valider!</button>
+    </div>
+  </form>
+  <a class="link" href="{{path('security_registration')}}">Créer un compte utilisateur</a>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div class="home">
+    <div class="dashboard-row row">
+      <div class="dashboard-container col-12">
+          <h4>Bienvenue sur mon site dédié à la chasse sous marine.</h4>
+          <p>Vous pouvez y trouver des informations sur les espèces de poisson et sur les tailles minimum de prélèvements.<br>
+          Vous pouvez également vous créer un compte utilisateur pour enrichir le contenu du site<br>
+          Décrire les sites sur lesquels vous aimez chasser et enregistrer vos sorties et vos
+          prises.<br>
+          Une page de blog permet d'échanger entre utilisateurs. N'hésitez pas à me faire par de vos suggestions pour
+          améliorer ce site.<br>
+          A bientôt<br>
+          Christophe </p>
+      </div>
+    </div>
+    <div class="dashboard-row row">
+      <div class="dashboard-container  col-4">
+        <h3>Dernières sorties publiées</h3>
+        <hr>
+        {% for sortie in sorties %}
+        <div class="row">
+          <div class="col-6">
+            <p>Par <i>{{sortie.auteur.userName}}</i><br><small>le {{ sortie.createdAt|date("d/m/Y") }}</small> </p>
+          </div>
+          <div class="col-3">
+            <img src="{{asset("assets/images/icones/prise.jpg")}}" width="60%" alt="">
+            <small><b>{{sortie.prises | length}}</b></small>
+          </div>
+          <div class="col-3">
+            <a href="{{path('sortie_show', {'id' : sortie.id}) }}">
+              <img src="{{asset("assets/images/icones/oeil.png")}}" width="60%" alt="">
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="col-4">
+        <a href="{{ path('espece_index') }}">
+          <img src="{{ asset("assets/images/icones/vieille.png")}}" style="border-radius:100%" width="100%" alt="fish">
+        </a>
+      </div>
+
+      <div class="dashboard-container  col-4">
+          <h3>Derniers posts sur le blog</h3>
+          <hr>
+          {% for comment in blog_comments %}
+          <div class="row">
+            <div class="col-6">
+              <p>De <i>{{ comment.auteur.userName }}</i><br><small>le {{ comment.createdAt|date("d/m/Y à H\\hi") }}</small></p>
+            </div>
+            <div class="col-6">
+              <small>{{ comment.contenu }}</small>
+            </div>
+          </div>
+          {% endfor %}
+          <a class="link" href="{{ path('blog') }}">Voir la suite ...</a>
+      </div>
+    </div>
+      <div class="dashboard-row dashboard-container row">
+        <div class="col-1">
+          <img src="{{asset("assets/images/icones/user.png")}}" width="70%" alt="">
+        </div>
+        <div class="col-1" style="font-size:2rem">
+          <p><b>{{ users}}</b></p>
+        </div>
+
+        <div class="col-1">
+          <img src="{{asset("assets/images/icones/prise.jpg")}}" width="100%" alt="">
+        </div>
+        <div class="col-1" style="font-size:2rem">
+          <p><b>{{ especes}}</b></p>
+        </div>
+
+        <div class="col-1">
+          <img src="{{asset("assets/images/icones/site.png")}}" width="70%" alt="">
+        </div>
+        <div class="col-1" style="font-size:2rem">
+          <p><b>{{sites}}</b></p>
+        </div>
+      </div>
+  </div>
+{% endblock %}

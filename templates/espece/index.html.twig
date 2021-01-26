@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div class="row">
+    {% for espece in especes %}
+      <div class="card">
+        <img class="card-img-top" src="{{ asset('assets/images/especes/' ~ espece.imageName) }}" alt="fish">
+        <div class="card-body">
+          <h3 class="card-title">{{ espece.nom }}</h3>
+          <p class="card-text">Publié par <i>{{ espece.auteur.username }}</i></p>
+          <p class="card-text">Taille minimale {{ espece.maille }} cm</p>
+          <p  class="card-text">{{ espece.contenu |slice(0,50) | split(' ') | slice(0,-1) | join(' ') }} ...</p>
+          <a class="link" href="{{ path('espece_show', {'id' : espece.id}) }}">lire la suite</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- PASSER A LA PAGE SUIVANTE -->
+
+  <a href="{{ path('espece_index', {'page' : page - 1}) }}" class="btn"> << </a>
+  <span>Page {{page}}</span>
+  <a href="{{ path('espece_index', {'page' : page + 1}) }}" class="btn"> >> </a>
+  <hr>
+  <!-- AJOUTER D UNE ESPECE -->
+  {% if app.user %}
+    <a href="{{ path('espece_create') }}" class="btn btn-success">Ajouter une nouvelle espèce</a>
+  {% else %}
+    <a class="link" href="{{ path('security_login') }}"> <strong>Connectez vous pour publier une nouvelle espèce</strong></a>
+  {% endif %}
+
+{% endblock %}
